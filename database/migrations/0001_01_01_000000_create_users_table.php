@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('email')->unique()->nullable();
             $table->date('dob')->nullable();
-            $table->string('firbase_uuid')->nullable();
+            $table->string('firebase_uuid')->nullable();
             $table->string('device_token')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

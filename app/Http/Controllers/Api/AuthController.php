@@ -13,8 +13,8 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'dob'           => 'nullable|string',
-            'firbase_uuid'  => 'nullable|string|max:255',
+            'dob'           => 'nullable|string|date_format:Y-m-d',
+            'firebase_uuid' => 'nullable|string|max:255',
             'device_token'  => 'nullable|string|max:255',
             'email'         => 'nullable|string|email|max:255|unique:users',
             'password'      => 'required|string|min:8',
@@ -24,7 +24,7 @@ class AuthController extends Controller
             'username'      => uniqid(),
             'dob'           => $request->dob,
             'email'         => $request->email,
-            'firbase_uuid'  => $request->firbase_uuid,
+            'firebase_uuid' => $request->firebase_uuid,
             'device_token'  => $request->device_token,
             'password'      => Hash::make($request->password),
         ]);
