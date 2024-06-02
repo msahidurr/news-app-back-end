@@ -22,19 +22,40 @@ class News extends BaseModel
         'slug' => 'string',
         'content' => 'string',
         'author' => 'string',
-        'status' => 'boolean',
+        'status' => 'integer',
         'created_by' => 'integer',
         'published_by' => 'integer',
         'published_at' => 'datetime',
     ];
+
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+
+    public function visit()
+    {
+        return $this->hasOne(NewsVisitor::class);
+    }
 
     public function categories()
     {
         return $this->belongsToMany(NewsCategory::class, 'news_category_maps', 'news_id', 'news_category_id')->active();
     }
 
-    public function visit()
+    public function scopePublished($query)
     {
-        return $this->hasOne(NewsVisitor::class);
+        return $query->where('status', 3);
+    }
+
+    public function statusLabel()
+    {
+        return [
+            1 => 'Draft',
+            2 => 'Pending',
+            3 => 'Published',
+            4 => 'Change request',
+            5 => 'Reject',
+        ][$this->status];
     }
 }
