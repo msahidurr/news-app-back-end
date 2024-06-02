@@ -58,4 +58,9 @@ class News extends BaseModel
             5 => 'Reject',
         ][$this->status];
     }
+
+    public static function visitCreate(array $request)
+    {
+        return NewsVisitor::create($request);
+    }
 }

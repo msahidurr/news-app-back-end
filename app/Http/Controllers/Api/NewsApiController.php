@@ -60,7 +60,7 @@ class NewsApiController extends Controller
         ], 404);
     }
 
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $news = News::published()
             ->with('author', 'categories')
@@ -88,7 +88,13 @@ class NewsApiController extends Controller
                     }),
                 ];
             });
-        
+
+        News::visitCreate([
+            'news_id' => $news->id,
+            'user_id' => $request->user()->id,
+            'visitor' => $request->ip_address,
+        ]);
+
         if(isset($news[0])) {
             return response()->json([
                 'message'  => 'Success',
