@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Models\BaseModel;
 
-class NewsCategory extends BaseModel
+class NewsTag extends BaseModel
 {
     protected $fillable = [
         'title',

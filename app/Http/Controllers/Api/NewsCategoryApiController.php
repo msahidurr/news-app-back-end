@@ -11,13 +11,8 @@ class NewsCategoryApiController extends Controller
     public function index(Request $request)
     {
         return response()->json([
-            'data'  => NewsCategory::active()->get()->map(function($row) {
-                return [
-                    'id'    => $row->id,
-                    'title' => $row->title,
-                    'slug'  => $row->slug,
-                ];
-            }) ?? null,
+            'message' => 'success',
+            'data'  => NewsCategory::select('id', 'title', 'slug')->active()->get() ?? null,
         ], 200);
     }
 }

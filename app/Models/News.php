@@ -40,7 +40,12 @@ class News extends BaseModel
 
     public function categories()
     {
-        return $this->belongsToMany(NewsCategory::class, 'news_category_maps', 'news_id', 'news_category_id')->active();
+        return $this->belongsToMany(NewsCategory::class, 'news_category_maps', 'news_id', 'news_category_id');
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(NewsTag::class, 'news_tag_maps', 'news_id', 'news_tag_id');
     }
 
     public function scopePublished($query)

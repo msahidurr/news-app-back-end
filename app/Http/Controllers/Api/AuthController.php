@@ -32,6 +32,7 @@ class AuthController extends Controller
         $token = $user->createToken('API Token')->plainTextToken;
 
         return response()->json([
+            'message' => 'success',
             'token' => $token,
             'user'  => $user,
         ], 201);
@@ -58,8 +59,25 @@ class AuthController extends Controller
         $token = $user->createToken('API Token')->plainTextToken;
 
         return response()->json([
+            'message' => 'success',
             'token' => $token,
             'user'  => $user,
+        ]);
+    }
+
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'new_password' => 'required|string',
+        ]);
+
+        $user = $request->user();
+        $user->password = Hash::make($request->new_password);
+        $user->update();
+
+        return response()->json([
+            'message' => 'success',
+            'user'  => null,
         ]);
     }
 

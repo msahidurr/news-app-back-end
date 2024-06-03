@@ -11,7 +11,7 @@ class NewsApiController extends Controller
     public function index(Request $request)
     {
         $news = News::published()
-            ->with('author', 'categories')
+            ->with('author', 'categories', 'tags')
             ->when($search = $request->search, function($query) use ($search) {
                 $query->where(function($query) use ($search) {
                     $query->where('title', 'like', "%{$search}%")
@@ -21,6 +21,11 @@ class NewsApiController extends Controller
             ->when($categoryId = $request->category_id, function($query) use ($categoryId) {
                 $query->whereHas('categories', function($query) use ($categoryId) {
                     $query->whereIn('news_categories.id', explode(',', $categoryId));
+                });
+            })
+            ->when($tag = $request->tag, function($query) use ($tag) {
+                $query->whereHas('tags', function($query) use ($tag) {
+                    $query->whereIn('news_tags.slug', explode(',', $tag));
                 });
             })
             ->orderBy('created_at', 'desc')
@@ -63,8 +68,18 @@ class NewsApiController extends Controller
     public function show(Request $request, $id)
     {
         $news = News::published()
-            ->with('author', 'categories')
+            ->with('author', 'categories:id,title,slug', 'tags:id,title,slug')
             ->orderBy('created_at', 'desc')
+            ->when($categoryId = $request->category_id, function($query) use ($categoryId) {
+                $query->whereHas('categories', function($query) use ($categoryId) {
+                    $query->whereIn('news_categories.id', explode(',', $categoryId));
+                });
+            })
+            ->when($tag = $request->tag, function($query) use ($tag) {
+                $query->whereHas('tags', function($query) use ($tag) {
+                    $query->whereIn('news_tags.slug', explode(',', $tag));
+                });
+            })
             ->whereId($id)
             ->get()
             ->map(function($row) {
@@ -89,13 +104,14 @@ class NewsApiController extends Controller
                 ];
             });
 
-        News::visitCreate([
-            'news_id' => $news->id,
-            'user_id' => $request->user()->id,
-            'visitor' => $request->ip_address,
-        ]);
-
         if(isset($news[0])) {
+
+            News::visitCreate([
+                'news_id' => $news[0]->id,
+                'user_id' => $request->user()->id,
+                'visitor' => $request->ip_address,
+            ]);
+
             return response()->json([
                 'message'  => 'Success',
                 'data'  => $news[0],

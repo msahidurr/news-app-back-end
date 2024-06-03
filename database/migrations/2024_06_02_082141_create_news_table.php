@@ -33,8 +33,18 @@ return new class extends Migration
             $table->unsignedBigInteger('news_category_id');
             $table->timestamps();
 
-            $table->foreign('news_id')->references('id')->on('news');
-            $table->foreign('news_category_id')->references('id')->on('news_categories');
+            $table->foreign('news_id')->references('id')->on('news')->cascadeOnDelete();
+            $table->foreign('news_category_id')->references('id')->on('news_categories')->cascadeOnDelete();
+        });
+
+        Schema::create('news_tag_maps', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('news_id');
+            $table->unsignedBigInteger('news_tag_id');
+            $table->timestamps();
+
+            $table->foreign('news_id')->references('id')->on('news')->cascadeOnDelete();
+            $table->foreign('news_tag_id')->references('id')->on('news_tags')->cascadeOnDelete();
         });
 
         Schema::create('news_visitors', function (Blueprint $table) {
@@ -44,8 +54,8 @@ return new class extends Migration
             $table->ipAddress('visitor')->nullable();
             $table->timestamps();
 
-            $table->foreign('news_id')->references('id')->on('news');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('news_id')->references('id')->on('news')->cascadeOnDelete();
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
         });
     }
 
@@ -55,5 +65,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('news');
+        Schema::dropIfExists('news_tag_maps');
+        Schema::dropIfExists('news_visitors');
+        Schema::dropIfExists('news_category_maps');
     }
 };

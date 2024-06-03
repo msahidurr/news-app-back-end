@@ -10,6 +10,7 @@ class UserApiController extends Controller
     public function index(Request $request)
     {
         return response()->json([
+            'message' => 'success',
             'data'  => $request->user(),
         ], 200);
     }
