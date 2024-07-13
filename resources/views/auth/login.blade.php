@@ -2,7 +2,43 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form method="POST" action="{{ route('login') }}">
+    <div class="login-box">
+        <div class="login-logo"> <a href="#"><b>Admin</b>LTE</a> </div>
+        <div class="card">
+            <div class="card-body login-card-body">
+                <p class="login-box-msg">Sign in to start your session</p>
+                <form action="{{ route('login') }}" method="post">
+                    @csrf
+
+                    <div class="input-group mb-3">
+                        <x-text-input id="email" class="form-control" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
+                        <div class="input-group-text"> <span class="bi bi-envelope"></span> </div>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <x-text-input id="password" class="form-control"
+                            type="password"
+                            name="password"
+                            required autocomplete="current-password" />
+
+                        <div class="input-group-text"> <span class="bi bi-lock-fill"></span> </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="form-check"> <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"> <label class="form-check-label" for="flexCheckDefault">
+                                    Remember Me
+                                </label> </div>
+                        </div> <!-- /.col -->
+                        <div class="col-4">
+                            <div class="d-grid gap-2"> <button type="submit" class="btn btn-primary">Sign In</button> </div>
+                        </div> <!-- /.col -->
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {{-- <form method="POST" action="{{ route('login') }}">
         @csrf
 
         <!-- Email Address -->
@@ -43,5 +79,5 @@
                 {{ __('Log in') }}
             </x-primary-button>
         </div>
-    </form>
+    </form> --}}
 </x-guest-layout>
