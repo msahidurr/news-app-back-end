@@ -83,7 +83,19 @@
                             <div class="col-4 text-center"> <a href="#">Friends</a> </div>
                         </div> <!--end::Row-->
                     </li> <!--end::Menu Body--> <!--begin::Menu Footer-->
-                    <li class="user-footer"> <a href="#" class="btn btn-default btn-flat">Profile</a> <a href="#" class="btn btn-default btn-flat float-end">Sign out</a> </li> <!--end::Menu Footer-->
+                    <li class="user-footer">
+                        <!-- Authentication -->
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+
+                            <x-responsive-nav-link :href="route('logout')"
+                                class="btn btn-default btn-flat float-end"
+                                    onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                                {{ __('Log Out') }}
+                            </x-responsive-nav-link>
+                        </form>
+                    </li> <!--end::Menu Footer-->
                 </ul>
             </li> <!--end::User Menu Dropdown-->
         </ul> <!--end::End Navbar Links-->

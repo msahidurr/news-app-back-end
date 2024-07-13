@@ -11,7 +11,7 @@
                     @csrf
 
                     <div class="input-group mb-3">
-                        <x-text-input id="email" class="form-control" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
+                        <x-text-input id="email" class="form-control" type="email" name="email" :value="old('email', 'admin@gmail.com')" required autofocus autocomplete="username" />
                         <div class="input-group-text"> <span class="bi bi-envelope"></span> </div>
                     </div>
 
@@ -19,6 +19,7 @@
                         <x-text-input id="password" class="form-control"
                             type="password"
                             name="password"
+                            value="12345678"
                             required autocomplete="current-password" />
 
                         <div class="input-group-text"> <span class="bi bi-lock-fill"></span> </div>
